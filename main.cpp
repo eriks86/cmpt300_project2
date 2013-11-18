@@ -4,7 +4,7 @@
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart [info TO-DO]
-// Yixuan [info TO-DO]
+// Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
 
 using namespace std;
