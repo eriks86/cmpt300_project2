@@ -3,19 +3,28 @@
 // blockedqueue.h (file 6 of 9)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
-// Ian Stewart [info TO-DO]
-// Yixuan [info TO-DO]
+// Ian Stewart, iastewar@sfu.ca, 301190316
+// Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
 
 #ifndef BLOCKEDQUEUE_H
 #define BLOCKEDQUEUE_H
 
-class blockedqueue 
+class BlockedQueue
 {
-private:
-// private class implementation TO-DO
-public:
-// public class implementation TO-DO
+    // for now i will call the jobs as : job
+    // need to change later
+
+    //
+    public:
+        BlockedQueue();
+        void Block(job a);
+        void IOFinish(int position);
+        job Unblock();
+
+    private:
+        job *ready, *notready;
+        int readyNumOfEle, notreadyNumOfEle;
 };
 
 #endif
