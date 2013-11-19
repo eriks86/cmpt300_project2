@@ -7,11 +7,19 @@
 // Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
 
-#include "Process.h"
+#include "process.h"
+#include <iostream>
 
 using namespace std;
 
 int main(){
-	// implementation TO-DO
+	process * p = new process();
+	int next = p->next();
+	while (next != process::END_OF_FILE) {
+        cout << next;
+		next = p->next();
+	}
+	cin.get();
+	delete p;
 	return 0;
 }

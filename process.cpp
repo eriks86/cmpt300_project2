@@ -8,10 +8,12 @@
 // ------------------------------------------
 
 #include <stdlib.h>
+#include <time.h>
 #include "Process.h"
 process::process()
 {
     counter = 0;
+	srand(time(0));
     length = rand()%246+10;
     instructions = new int[length]; //array of random length between 10 and 255.
 
