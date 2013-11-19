@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include "Process.h"
-Process::Process()
+process::process()
 {
     counter = 0;
     length = rand()%246+10;
@@ -27,12 +27,12 @@ Process::Process()
     }
 }
 
-Process::~Process()
+process::~process()
 {
     delete [] instructions;
 }
 
-int Process::next()
+int process::next()
 {
     if (counter==length) {
         return END_OF_FILE;

@@ -13,15 +13,15 @@
 // Simulates a process with an array of instructions, which are either
 // CPU-bound computation or else traps to input/output devices.
 
-class Process
+class process
 {
     public:
         static const int CPU = 0;
         static const int IO = 1;
         static const int END_OF_FILE = -1;
         int next(void);
-        Process();
-        virtual ~Process();
+        process();
+        virtual ~process();
     protected:
     private:
         int * instructions;

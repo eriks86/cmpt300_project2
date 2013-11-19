@@ -7,6 +7,8 @@
 // Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
 
+#include "Process.h"
+
 using namespace std;
 
 int main(){
