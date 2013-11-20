@@ -13,12 +13,14 @@
 process::process()
 {
     counter = 0;
+	numTimeouts = 0;
 	srand(time(0));
     length = rand()%246+10;
     instructions = new int[length]; //array of random length between 10 and 255.
 
     //The instructions are IO instructions with a 10% probability.
-    //The IO instructions are uniformly distributed thoughout the program (unrealistic, maybe change this later)
+    //The IO instructions are uniformly distributed thoughout the program 
+	//(unrealistic, maybe change this later)
     for (int i=0; i<length; i++) {
         if (rand()%100 < 10) {
             instructions[i] = IO;

@@ -19,6 +19,7 @@ class process
         static const int CPU = 0;
         static const int IO = 1;
         static const int END_OF_FILE = -1;
+		int numTimeouts;
         int next(void);
         process();
         virtual ~process();

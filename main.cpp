@@ -8,6 +8,7 @@
 // ------------------------------------------
 
 #include "process.h"
+#include "readyqueue.h"
 #include <iostream>
 
 using namespace std;
