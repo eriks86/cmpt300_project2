@@ -21,31 +21,33 @@ void * longTermScheduler(void * arg) { //argument to pthread_create
 	readyqueue * r = (readyqueue *)arg;
 	srand(time(0));
 	while (true) {
-		if (r->size()>=16) {
-			continue;
+		if (r->size()>=8) {
+			//continue;
+			break;
 			//release some sort of mutex here
 		}
 		process * p = new process();
 		r->push(p);
-		usleep(rand()/(RAND_MAX/500));
+		//usleep(rand()/(RAND_MAX/500));
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
 	}
 	return 0;
 }
 
 int main(){
-	//test the readyqueue to see if it works.
-	process * p = new process();
-	process * p2 = new process();
-	p2->numTimeouts = 1;
 	readyqueue r;
-	r.push(p2);
-	r.push(p);
-	cout << (r.front()==p ? "true" : "false") << endl;
-	r.pop();
-	cout << (r.front()==p2 ? "true" : "false");
-	delete p;
-	delete p2;
+	longTermScheduler((void *)&r);
+	while (!r.empty()) {
+		process * p = r.front();
+		r.pop();
+		int instr = p->next();
+		while (instr!=process::END_OF_FILE) {
+			//cout << instr;
+			instr = p->next();
+		}
+		//cout << endl;
+		delete p;
+	}
 	cin.get();
 	return 0;
 }
