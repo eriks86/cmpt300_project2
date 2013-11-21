@@ -9,7 +9,7 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "Process.h"
+#include "process.h"
 process::process()
 {
     counter = 0;
@@ -19,7 +19,7 @@ process::process()
     instructions = new int[length]; //array of random length between 10 and 255.
 
     //The instructions are IO instructions with a 10% probability.
-    //The IO instructions are uniformly distributed thoughout the program 
+    //The IO instructions are uniformly distributed throughout the program 
 	//(unrealistic, maybe change this later)
     for (int i=0; i<length; i++) {
         if (rand()%100 < 10) {
