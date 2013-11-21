@@ -6,5 +6,7 @@
 // Ian Stewart, iastewar@sfu.ca, 301190316
 // Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
-
+#ifndef TESTS_H
+#define TESTS_H
 void testReadyQueue();
+#endif

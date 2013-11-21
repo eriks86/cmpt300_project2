@@ -12,7 +12,7 @@
 #include <stdlib.h>
 #include <queue>
 
-int readyqueue::size() {
+unsigned int readyqueue::size() {
 	return queues[0].size() + queues[1].size() + queues[2].size();
 }
 

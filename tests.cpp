@@ -12,21 +12,23 @@
 #include "readyqueue.h"
 #include "blockedqueue.h"
 #include "tests.h"
+#include "longtermscheduler.h"
 #include <iostream>
 #include <stdlib.h>
 
 void testReadyQueue(){
 	// test the readyqueue to see if it works.
-	process * p = new process();
-	process * p2 = new process();
-	p2->numTimeouts = 1;
 	readyqueue r;
-	r.push(p2);
-	r.push(p);
-	cout << (r.front()==p ? "true" : "false") << endl;
-	r.pop();
-	cout << (r.front()==p2 ? "true" : "false");
-	delete p;
-	delete p2;
-	cin.get();
+	longTermScheduler((void *)&r);
+	while (!r.empty()) {
+		process * p = r.front();
+		r.pop();
+		int instr = p->next();
+		while (instr!=process::END_OF_FILE) {
+			cout << instr;
+			instr = p->next();
+		}
+		cout << endl;
+		delete p;
+	}
 }

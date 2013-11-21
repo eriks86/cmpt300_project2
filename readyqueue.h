@@ -22,7 +22,7 @@ public:
 	void push(process * p);
 	void pop(void);
 	process * front(void);
-	int size(void);
+	unsigned int size(void);
 	bool empty(void);
 };
 
