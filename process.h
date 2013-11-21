@@ -19,15 +19,15 @@ class process
         static const int CPU = 0;
         static const int IO = 1;
         static const int END_OF_FILE = -1;
-		int numTimeouts;
+		int numTimeouts; //used for the multi-level ready queue
         int next(void);
         process();
         virtual ~process();
     protected:
     private:
         int * instructions;
-        int counter;
-        int length;
+        int counter; //the simulated program counter
+        int length; //size of the program
 };
 
 #endif // PROCESS_H

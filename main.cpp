@@ -14,13 +14,18 @@
 using namespace std;
 
 int main(){
+	//test the readyqueue to see if it works.
 	process * p = new process();
-	int next = p->next();
-	while (next != process::END_OF_FILE) {
-        cout << next;
-		next = p->next();
-	}
-	cin.get();
+	process * p2 = new process();
+	p2->numTimeouts = 1;
+	readyqueue r;
+	r.push(p2);
+	r.push(p);
+	cout << (r.front()==p ? "true" : "false") << endl;
+	r.pop();
+	cout << (r.front()==p2 ? "true" : "false");
 	delete p;
+	delete p2;
+	cin.get();
 	return 0;
 }

@@ -36,6 +36,8 @@ process::~process()
     delete [] instructions;
 }
 
+//increments the program counter and returns the next instruction
+//if it is at the end of the file, returns process::END_OF_FILE
 int process::next()
 {
     if (counter==length) {
