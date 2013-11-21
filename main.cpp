@@ -16,14 +16,21 @@
 
 using namespace std;
 
-void longTermScheduler(readyqueue &r) {
+//adds processes to the ready queue
+void * longTermScheduler(void * arg) { //argument to pthread_create
+	readyqueue * r = (readyqueue *)arg;
 	srand(time(0));
 	while (true) {
+		if (r->size()>=16) {
+			continue;
+			//release some sort of mutex here
+		}
 		process * p = new process();
-		r.push(p);
+		r->push(p);
 		usleep(rand()/(RAND_MAX/500));
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
 	}
+	return 0;
 }
 
 int main(){
