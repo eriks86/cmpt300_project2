@@ -7,66 +7,25 @@
 // Yixuan Li, yixuanl@sfu.ca, 301191905
 // ------------------------------------------
 
-#include blockedqueue.h
-class BlockedQueue
-{
-    // for now i will call the jobs as : job
-    // need to change later
-    BlockedQueue::BlockedQueue()   // default constructor
+#include "blockedqueue.h"
+
+    void blockedqueue::Block(process* a)
     {
-        ready = new job[10];
-        notready = new job[10];
-        readyNumOfEle = 0;
-        notreadyNumOfEle = 0;
+        notready.push_back(a);
     }
 
-    void BlockedQueue::Block(job a)
+    void blockedqueue::IOFinish(int position)
     {
-        notready[notreadyNumOfEle] = a;
-        notreadyNumOfEle++;
-        if(notreadyNumOfEle >= sizeof(notready)/sizeof(notready[0]))
-        {
-            String *temp= new String[notreadyNumOfEle*2];
-            std::copy(notready, notreadynumOfEle, temp);
-            delete[] notready;
-            notready = temp;
-        }
+        process* temp = notready[position];
+        notready.erase(notready.begin()+position);
+        ready.push(temp);
     }
 
-    void BlockedQueue::IOFinish(int position)
+    process* blockedqueue::Unblock()
     {
-        ready[readyNumOfEle] = notready[position];
-        readyNumOfEle++;
-        if(readyNumOfEle >= sizeof(ready)/sizeof(ready[0]))
-        {
-            String *temp = new String[readyNumOfEle*2];
-            copy(ready, readynumOfEle, temp);
-            delete[] ready;
-            ready = temp;
-        }
-        for (int i = position; i < notreadyNumOfEle - 1; i++)
-        {
-            notready[i] = notready[i + 1];
-        }
-        notreadyNumOfEle--;
+        process* temp = ready.front();
+        ready.pop();
+        return temp;
     }
 
-    job BlockedQueue::Unblock()
-    {
-        job ret = ready[0];
-        for (int i = 0; i < readyNumOfEle - 1; i++)
-        {
-            ready[i] = ready[i + 1];
-        }
-        readyNumOfEle--;
-        return ret;
-    }
 
-    /*int BlockedQueue::Main()
-    {
-        return 0;
-    }*/
-
-
-
-}

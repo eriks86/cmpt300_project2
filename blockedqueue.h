@@ -9,22 +9,21 @@
 
 #ifndef BLOCKEDQUEUE_H
 #define BLOCKEDQUEUE_H
+#include <queue>
+#include <vector>
 
-class BlockedQueue
+using namespace std;
+
+class blockedqueue
 {
-    // for now i will call the jobs as : job
-    // need to change later
-
-    //
     public:
-        BlockedQueue();
-        void Block(job a);
+        void Block(process* a);
         void IOFinish(int position);
-        job Unblock();
+        process Unblock();
 
     private:
-        job *ready, *notready;
-        int readyNumOfEle, notreadyNumOfEle;
+        queue<process*> ready;
+        vector<process*> notready;
 };
 
 #endif
