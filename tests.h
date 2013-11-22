@@ -9,4 +9,5 @@
 #ifndef TESTS_H
 #define TESTS_H
 void testReadyQueue();
+void testLTS();
 #endif

@@ -18,6 +18,41 @@
 
 void testReadyQueue(){
 	// test the readyqueue to see if it works.
+	process * p = new process();
+	process * p2 = new process();
+	process * p3 = new process();
+	int instr = p->next();
+	while (instr!=process::END_OF_FILE) {
+		cout << instr;
+		instr = p->next();
+	}
+	cout << endl;
+	instr = p2->next();
+	while (instr!=process::END_OF_FILE) {
+		cout << instr;
+		instr = p2->next();
+	}
+	cout << endl;
+	cout << (p!=p2 ? "true" : "false") << endl;
+	p2->numTimeouts = 1;
+	readyqueue r;
+	cout << (r.size()==0 ? "true" : "false") << endl;
+	cout << (r.empty() ? "true" : "false") << endl;
+	r.push(p2);
+	cout << (r.size()==1 && !r.empty() ? "true" : "false") << endl;
+	r.push(p);
+	r.push(p3);
+	cout << (r.front()==p ? "true" : "false") << endl;
+ 	r.pop();
+	cout << (r.front()!=p ? "true" : "false") << endl;
+	r.pop();
+ 	cout << (r.front()==p2 ? "true" : "false") << endl;
+	r.pop();
+	delete p;
+	delete p2;
+}
+
+void testLTS() {
 	readyqueue r;
 	longTermScheduler((void *)&r);
 	while (!r.empty()) {

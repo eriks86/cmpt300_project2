@@ -8,15 +8,15 @@
 // ------------------------------------------
 
 #include <iostream>
+#include <stdlib.h>
 #include "tests.h"
 
 using namespace std;
 
-//adds processes to the ready queue
-
-
 int main(){
-	testReadyQueue();
+	srand(time(0)); //seed all the rand()s at once.
+	//If you call srand anywhere else, it will get seeded more than once resulting in the same numbers.
+	testLTS();
 	cin.get();
 	return 0;
 }

@@ -8,9 +8,8 @@
 
 void * longTermScheduler(void * arg) { //argument to pthread_create
 	readyqueue * r = (readyqueue *)arg;
-	srand(time(0));
 	while (true) {
-		if (r->size()>=8) {
+		if (r->size()>=16) {
 			//continue;
 			break;
 			//release some sort of mutex here
@@ -19,6 +18,7 @@ void * longTermScheduler(void * arg) { //argument to pthread_create
 		r->push(p);
 		usleep(rand()/(RAND_MAX/500));
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
+		//so that we don't flood the ready queue
 	}
 	return 0;
 }
