@@ -20,7 +20,7 @@ class blockedqueue
     public:
         void Block(process* a);
         void IOFinish(int position);
-        process Unblock();
+        process * Unblock();
 
     private:
         queue<process*> ready;
