@@ -22,7 +22,8 @@ void *initializeCPUS(void *thread_id){
 	// function called to create 3 CPU threads
 	long tid;
 	tid = (long)thread_id;
-	cout << "created a CPU with thread ID: " << tid << endl;
+	printf("xxx created a CPU with thread ID: %d", tid);
+	//cout << "created a CPU with thread ID: " << tid << endl;
 }
 
 // default constructor
