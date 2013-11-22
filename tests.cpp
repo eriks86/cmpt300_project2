@@ -13,6 +13,7 @@
 #include "blockedqueue.h"
 #include "tests.h"
 #include "longtermscheduler.h"
+#include "simulationCPU.h"
 #include <iostream>
 #include <stdlib.h>
 
@@ -66,4 +67,8 @@ void testLTS() {
 		cout << endl;
 		delete p;
 	}
+}
+
+void testCPU(){
+	
 }
