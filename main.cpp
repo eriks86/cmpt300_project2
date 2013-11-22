@@ -16,7 +16,8 @@ using namespace std;
 int main(){
 	srand(time(0)); //seed all the rand()s at once.
 	//If you call srand anywhere else, it will get seeded more than once resulting in the same numbers.
-	testReadyQueue();
-	cin.get();
+	//testReadyQueue();
+	//cin.get();
+	testCPU();
 	return 0;
 }

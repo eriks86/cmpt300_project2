@@ -67,5 +67,6 @@ void testLTS() {
 }
 
 void testCPU(){
-	
+	// create 3 CPU threads to test
+	simulationCPU myCPU;	
 }

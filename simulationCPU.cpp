@@ -14,21 +14,35 @@
 #include <unistd.h>
 #include <pthread.h>
 
+#define NUM_OF_CPU 3
+
 using namespace std;
 
-void* testWait(void*){
-	cout << "A CPU has been brought online" << endl;
+void *initializeCPUS(void *thread_id){
+	// function called to create 3 CPU threads
+	long tid;
+	tid = (long)thread_id;
+	cout << "created a CPU with thread ID: " << tid << endl;
 }
 
 // default constructor
 simulationCPU::simulationCPU()
 {
-	pthread_t simCPU;
-	pthread_create(&simCPU, NULL, &testWait, NULL);
+	pthread_t threads[NUM_OF_CPU];
+    int temp;
+    int i;
+    for(i=0; i < NUM_OF_CPU; i++){
+		temp = pthread_create(&threads[i], NULL, initializeCPUS, (void *)i); // TO-DO: fix cast int->pointer warning
+		if(temp){
+			cout << "Error:unable to create thread," << temp << endl;
+			exit(-1);
+		}
+	}
 }
 
 // default deconstructor
 simulationCPU::~simulationCPU()
-{
+{	
+	// CPU threads run until program is exited
     pthread_exit(NULL);
 }
