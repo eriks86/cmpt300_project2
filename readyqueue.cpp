@@ -11,42 +11,64 @@
 #include "process.h"
 #include <stdlib.h>
 #include <queue>
+#include <pthread.h>
 
-unsigned int readyqueue::size() {
-	return queues[0].size() + queues[1].size() + queues[2].size();
+readyqueue::readyqueue() {
+	pthread_mutexattr_init(&recursive);
+	pthread_mutexattr_settype(&recursive, PTHREAD_MUTEX_RECURSIVE);
+	pthread_mutex_init(&myMutex, &recursive);
+	//allow the same thread to hold the same mutex more than once in a recursive function call
+	//instead of blocking itself
+	emptyQ = PTHREAD_COND_INITIALIZER;
 }
 
-//push at the tail
+readyqueue::~readyqueue() {
+	pthread_mutex_destroy(&myMutex);
+	pthread_cond_destroy(&emptyQ);
+	pthread_mutexattr_destroy(&recursive);
+}
+
+unsigned int readyqueue::size() {
+	pthread_mutex_lock(&myMutex);
+	return queues[0].size() + queues[1].size() + queues[2].size();
+	pthread_mutex_unlock(&myMutex);
+}
+
+//Add something to the back of the queue
 void readyqueue::push(process * p) {
 	//the level of a process in the multi-level feedback queue 
 	//corresponds to the number of times it has timed out.
+	pthread_mutex_lock(&myMutex);
 	int level = (p->numTimeouts>=2 ? 2 : p->numTimeouts);
 	queues[level].push(p);
+	pthread_mutex_unlock(&myMutex);
+	pthread_cond_signal(&emptyQ);
 }
 
-//Deletes the front of the queue. Does not return it.
-void readyqueue::pop() {
+//Deletes and returns the front of the queue.
+process * readyqueue::pop() {
+	pthread_mutex_lock(&myMutex);
+	while (empty()) {
+		pthread_cond_wait(&emptyQ, &myMutex);
+	}
+	process * temp;
 	if (!queues[0].empty()) {
+		temp = queues[0].front();
 		queues[0].pop();
 	} else if (!queues[1].empty()) {
+		temp = queues[1].front();
 		queues[1].pop();
 	} else {
+		temp = queues[2].front();
 		queues[2].pop();
 	}
-}
-
-//Returns the front of the queue. Does not delete it.
-process * readyqueue::front() {
-	if (!queues[0].empty()) {
-		return queues[0].front();
-	} else if (!queues[1].empty()) {
-		return queues[1].front();
-	} else {
-		return queues[2].front();
-	}
+	return temp;
+	pthread_mutex_unlock(&myMutex);
 }
 
 //returns true if nothing is in the queue
 bool readyqueue::empty() {
+	pthread_mutex_lock(&myMutex);
 	return size()==0;
+	pthread_mutex_unlock(&myMutex);
 }

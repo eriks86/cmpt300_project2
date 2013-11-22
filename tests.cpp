@@ -43,22 +43,19 @@ void testReadyQueue(){
 	cout << (r.size()==1 && !r.empty() ? "true" : "false") << endl;
 	r.push(p);
 	r.push(p3);
-	cout << (r.front()==p ? "true" : "false") << endl;
- 	r.pop();
-	cout << (r.front()!=p ? "true" : "false") << endl;
-	r.pop();
- 	cout << (r.front()==p2 ? "true" : "false") << endl;
-	r.pop();
+	cout << (r.pop()==p ? "true" : "false") << endl;
+	cout << (r.pop()!=p ? "true" : "false") << endl;
+ 	cout << (r.pop()==p2 ? "true" : "false") << endl;
 	delete p;
 	delete p2;
+	delete p3;
 }
 
 void testLTS() {
 	readyqueue r;
 	longTermScheduler((void *)&r);
 	while (!r.empty()) {
-		process * p = r.front();
-		r.pop();
+		process * p = r.pop();
 		int instr = p->next();
 		while (instr!=process::END_OF_FILE) {
 			cout << instr;

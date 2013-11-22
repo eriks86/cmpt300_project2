@@ -12,16 +12,21 @@
 #include "process.h"
 #include <queue>
 #include <stdlib.h>
+#include <pthread.h>
 
 //This is a multi-level queue of processes implemented as a linked list.
 class readyqueue 
 {
 private:
 	std::queue<process *> queues [3];
+	pthread_mutex_t myMutex;
+	pthread_mutexattr_t recursive;
+	pthread_cond_t emptyQ;
 public:
+	readyqueue();
+	~readyqueue();
 	void push(process * p);
-	void pop(void);
-	process * front(void);
+	process * pop(void);
 	unsigned int size(void);
 	bool empty(void);
 };
