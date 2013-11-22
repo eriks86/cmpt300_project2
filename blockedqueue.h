@@ -14,6 +14,7 @@
 
 using namespace std;
 
+//Implement the blocked queue with a vector and a queue
 class blockedqueue
 {
     public:
