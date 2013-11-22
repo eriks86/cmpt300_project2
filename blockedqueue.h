@@ -11,6 +11,8 @@
 #define BLOCKEDQUEUE_H
 #include <queue>
 #include <vector>
+#include <pthread.h>
+#include "process.h"
 
 using namespace std;
 
@@ -21,8 +23,10 @@ class blockedqueue
         void Block(process* a);
         void IOFinish(int position);
         process * Unblock();
-
+		blockedqueue();
+		~blockedqueue();
     private:
+		pthread_mutex_t myMutex;
         queue<process*> ready;
         vector<process*> notready;
 };

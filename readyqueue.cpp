@@ -30,8 +30,9 @@ readyqueue::~readyqueue() {
 
 unsigned int readyqueue::size() {
 	pthread_mutex_lock(&myMutex);
-	return queues[0].size() + queues[1].size() + queues[2].size();
+	unsigned int temp = queues[0].size() + queues[1].size() + queues[2].size();
 	pthread_mutex_unlock(&myMutex);
+	return temp;
 }
 
 //Add something to the back of the queue
@@ -62,13 +63,14 @@ process * readyqueue::pop() {
 		temp = queues[2].front();
 		queues[2].pop();
 	}
-	return temp;
 	pthread_mutex_unlock(&myMutex);
+	return temp;
 }
 
 //returns true if nothing is in the queue
 bool readyqueue::empty() {
 	pthread_mutex_lock(&myMutex);
-	return size()==0;
+	bool temp = size()==0;
 	pthread_mutex_unlock(&myMutex);
+	return temp;
 }
