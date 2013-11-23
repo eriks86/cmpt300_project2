@@ -74,10 +74,10 @@ void * shortTermScheduler (void * arg) {
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
 	cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
-	process p = *(process *)arg; 	   // =============================== IAN: take a look here, my best guess for segfault
+	process * p = (process *)arg; 	   // =============================== IAN: take a look here, my best guess for segfault
 	cout << "CPURunProcess: line 78\n";// REMOVE: debugging purposes
 	int counter = 0;
-	int next = p.next();
+	int next = p->next();
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) { 
 			//cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
@@ -90,11 +90,11 @@ void * CPURunProcess (void * arg) {
 		if (counter==TIME_QUANTUM) {
 			//cout << "CPURunProcess: line 84\n";// REMOVE: debugging purposes
 			//this simulates a timing out of the process. We want to add it back to the ready queue.
-			p.numTimeouts++;
-			r.push(&p);
+			p->numTimeouts++;
+			r.push(p);
 			return 0;
 		}
-		next = p.next();
+		next = p->next();
 	}
 	//we reach this point in the code if the process has reached the end of its file
 	//delete &p;
