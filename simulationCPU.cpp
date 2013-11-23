@@ -9,6 +9,9 @@
 
 #include "simulationCPU.h"
 #include "process.h"
+#include "longtermscheduler.h"
+#include "blockedqueue.h"
+#include "readyqueue.h"
 #include <iostream>
 #include <cstdlib>
 #include <stdlib.h>
@@ -17,25 +20,30 @@
 
 using namespace std;
 
+extern readyqueue r;
+extern blockedqueue b;
+
 void * simulationCPU::initializeCPUS(void* arg){
 	cout << "created a CPU" << endl;
 }
 
 void * simulationCPU::runProcess(void * arg) {
-	process p = *(process *)arg;
+	process p = *(process *)arg; 
 	int counter = 0;
 	int next = p.next();
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) {
-			return (void*)&b;
+			b.Block(&p);
+			return NULL;
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
 			p.numTimeouts++;
-			return (void *)&t;
+			r.push(&p);
+			return NULL;
 		}
 	}
-	return (void *)&d;
+	return NULL;
 }
 
 // default constructor

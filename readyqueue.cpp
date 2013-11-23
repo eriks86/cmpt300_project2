@@ -47,6 +47,7 @@ void readyqueue::push(process * p) {
 }
 
 //Deletes and returns the front of the queue.
+//If the queue is empty, it waits for it to be full again
 process * readyqueue::pop() {
 	pthread_mutex_lock(&myMutex);
 	while (empty()) {
