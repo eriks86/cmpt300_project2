@@ -43,38 +43,44 @@ void longTermScheduler() {
 // this just gets some stuff rolling.
 void * shortTermInitialize(void * arg) {
 	for (int i=0; i<3; i++) {
-		// run 3 CPUs
+		//cout << "shortTermInitialize: line 46\n"; // REMOVE: debugging purposes // run 3 CPUs
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
 		// create a STS for each CPU
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
-		cout << "shortTermInitialize: line 50\n"; // REMOVE: debugging purposes
+		//cout << "shortTermInitialize: line 50\n"; // REMOVE: debugging purposes
 	}
-	cout << "shortTermInitialize: line 52\n"; // REMOVE: debugging purposes
+	//cout << "shortTermInitialize: line 52\n"; // REMOVE: debugging purposes
 }
 
 // we want to continually check whether each thread is done or not
 void * shortTermScheduler (void * arg) {
-	cout << "shortTermScheduler: line 57\n";// REMOVE: debugging purposes
+	//cout << "shortTermScheduler: line 57\n";// REMOVE: debugging purposes
 	int i = *(int *)arg;
-	cout << "shortTermScheduler: line 59\n";// REMOVE: debugging purposes
+	//cout << "shortTermScheduler: line 59\n";// REMOVE: debugging purposes
 	while (true) {
+		//cout << "shortTermScheduler: line 61\n";// REMOVE: debugging purposes
 		pthread_join(CPUthreads[i], NULL); //try to join the thread
-		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
+		cout << "shortTermScheduler: line 63\n";// REMOVE: debugging purposes
+		process * readyProcess = r.pop();
+		cout << readyProcess;
+		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)readyProcess);
+		cout << "shortTermScheduler: line 67\n";// REMOVE: debugging purposes
 		//when the thread is done, make it again
 		pthread_yield();
+		//cout << "shortTermScheduler: line 68\n";// REMOVE: debugging purposes
 	}
 }
 
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
-	cout << "CPURunProcess: line 70\n";// REMOVE: debugging purposes
+	cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
 	process p = *(process *)arg; 	   // =============================== IAN: take a look here, my best guess for segfault
-	cout << "CPURunProcess: line 72\n";// REMOVE: debugging purposes
+	cout << "CPURunProcess: line 78\n";// REMOVE: debugging purposes
 	int counter = 0;
 	int next = p.next();
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) { 
-			cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
+			//cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
 			//this simulates a trap to IO. We want to block the process and resume it later
 			//b.Block(&p); 
 			///////////////TODO FINISH BLOCKED QUEUE LOGIC////////////////////
@@ -82,17 +88,18 @@ void * CPURunProcess (void * arg) {
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
-			cout << "CPURunProcess: line 84\n";// REMOVE: debugging purposes
+			//cout << "CPURunProcess: line 84\n";// REMOVE: debugging purposes
 			//this simulates a timing out of the process. We want to add it back to the ready queue.
 			p.numTimeouts++;
 			r.push(&p);
 			return 0;
 		}
+		next = p.next();
 	}
 	//we reach this point in the code if the process has reached the end of its file
 	//delete &p;
 	//gives an error
 	//////////TODO FIND OUT IF THIS CAUSES A MEMORY LEAK AND IF SO HOW TO FIX IT///////////
-	cout << "CPURunProcess: line 95\n";// REMOVE: debugging purposes
+	cout << "CPURunProcess: line 97\n";// REMOVE: debugging purposes
 	return 0;
 }

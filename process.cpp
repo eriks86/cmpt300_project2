@@ -14,6 +14,7 @@
 
 process::process()
 {
+	//std::cout << "process::process() line 17\n";
     counter = 0;
 	numTimeouts = 0;
     length = rand()%246+10;
@@ -30,6 +31,7 @@ process::process()
             instructions[i] = CPU;
         }
     }
+	//std::cout << "process::process() line 34\n";
 }
 
 process::~process()
@@ -41,7 +43,7 @@ process::~process()
 //if it is at the end of the file, returns process::END_OF_FILE
 int process::next()
 {
-	std::cout << "process::next: line 44\n";// REMOVE: debugging purposes 
+	//std::cout << "process::next: line 46\n";// REMOVE: debugging purposes 
     if (counter==length) {
         return END_OF_FILE;
     } else {
