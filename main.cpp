@@ -20,7 +20,9 @@ int main(){
 	
 	pthread_t initializer;
 	pthread_create(&initializer, NULL, shortTermInitialize, NULL);
+	cout << "main: line 23\n"; // REMOVE: debugging purposes
 	longTermScheduler();
+	cout << "main: line 25\n"; // REMOVE: debugging purposes
 	
 	return 0;
 }

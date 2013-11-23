@@ -22,6 +22,7 @@ pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
 
 void longTermScheduler() {
+	cout << "longTermScheduler: line 25\n";// REMOVE: debugging purposes
 	while (true) {
 		if (r.size()>=MAX_MULTIPROGRAM) { 
 			//we don't want too many processes in the ready queue
@@ -39,19 +40,23 @@ void longTermScheduler() {
 	}
 }
 
-//this just gets some stuff rolling.
+// this just gets some stuff rolling.
 void * shortTermInitialize(void * arg) {
 	for (int i=0; i<3; i++) {
+		// run 3 CPUs
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
-		//run 3 CPUs
+		// create a STS for each CPU
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
-		//create a STS for each CPU
+		cout << "shortTermInitialize: line 50\n"; // REMOVE: debugging purposes
 	}
+	cout << "shortTermInitialize: line 52\n"; // REMOVE: debugging purposes
 }
 
-//we want to continually check whether each thread is done or not
+// we want to continually check whether each thread is done or not
 void * shortTermScheduler (void * arg) {
+	cout << "shortTermScheduler: line 57\n";// REMOVE: debugging purposes
 	int i = *(int *)arg;
+	cout << "shortTermScheduler: line 59\n";// REMOVE: debugging purposes
 	while (true) {
 		pthread_join(CPUthreads[i], NULL); //try to join the thread
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
@@ -62,18 +67,21 @@ void * shortTermScheduler (void * arg) {
 
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
+	cout << "CPURunProcess: line 70\n";// REMOVE: debugging purposes
 	process p = *(process *)arg; 
 	int counter = 0;
 	int next = p.next();
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) { 
+			cout << "CPURunProcess: line 76\n";// REMOVE: debugging purposes
 			//this simulates a trap to IO. We want to block the process and resume it later
 			//b.Block(&p); 
-///////////////TODO FINISH BLOCKED QUEUE LOGIC////////////////////
+			///////////////TODO FINISH BLOCKED QUEUE LOGIC////////////////////
 			return 0;
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
+			cout << "CPURunProcess: line 84\n";// REMOVE: debugging purposes
 			//this simulates a timing out of the process. We want to add it back to the ready queue.
 			p.numTimeouts++;
 			r.push(&p);
@@ -83,6 +91,7 @@ void * CPURunProcess (void * arg) {
 	//we reach this point in the code if the process has reached the end of its file
 	//delete &p;
 	//gives an error
-//////////TODO FIND OUT IF THIS CAUSES A MEMORY LEAK AND IF SO HOW TO FIX IT///////////
+	//////////TODO FIND OUT IF THIS CAUSES A MEMORY LEAK AND IF SO HOW TO FIX IT///////////
+	cout << "CPURunProcess: line 95\n";// REMOVE: debugging purposes
 	return 0;
 }
