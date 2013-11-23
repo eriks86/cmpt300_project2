@@ -14,16 +14,16 @@ blockedqueue b;
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
 
-void longTermScheduler() { //argument to pthread_create
+
+void longTermScheduler() {
 	while (true) {
 		if (r.size()>=16) {
-			//continue;
-			break;
-			//release some sort of mutex here
+			pthread_yield();
+			usleep(500);
+			continue;
 		}
 		process * p = new process();
 		r.push(p);
-		//emptyReadyQ.signal();
 		usleep(rand()/(RAND_MAX/500));
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
 		//so that we don't flood the ready queue
@@ -42,6 +42,7 @@ void * shortTermScheduler (void * arg) {
 	while (true) {
 		pthread_join(CPUthreads[i], NULL);
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
+		pthread_yield();
 	}
 }
 
