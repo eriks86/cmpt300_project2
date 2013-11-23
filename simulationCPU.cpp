@@ -34,38 +34,24 @@ void * simulationCPU::runProcess(void * arg) {
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) {
 			b.Block(&p);
-			return NULL;
+			return 0;
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
 			p.numTimeouts++;
 			r.push(&p);
-			return NULL;
+			return 0;
 		}
 	}
-	return NULL;
+	return 0;
 }
 
 // default constructor
 simulationCPU::simulationCPU()
 {
-	/*pthread_t simCPU;
-    int temp;
-	temp = pthread_create(&simCPU, NULL, initializeCPUS, NULL); 
-	if(temp){
-		cout << "Error:unable to create thread," << temp << endl;
-		exit(-1);
-	}*/
-
-	cout << "created a CPU" << endl;
-	b = BLOCKED;
-	t = TIMED_OUT;
-	d = DONE;
 }
 
 // default deconstructor
 simulationCPU::~simulationCPU()
 {	
-	// CPU threads run until program is exited
-    //pthread_exit(NULL);
 }

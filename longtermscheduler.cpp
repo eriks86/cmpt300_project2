@@ -9,9 +9,11 @@
 
 readyqueue r;
 blockedqueue b;
-pthread_mutex_t emptyReadyQ = PTHREAD_MUTEX_INITIALIZER;
+simulationCPU cpus [3];
+pthread_t CPUthreads [3];
+pthread_t schedulerThreads [3];
 
-void * longTermScheduler(void * arg) { //argument to pthread_create
+void longTermScheduler() { //argument to pthread_create
 	while (true) {
 		if (r.size()>=16) {
 			//continue;
@@ -25,17 +27,17 @@ void * longTermScheduler(void * arg) { //argument to pthread_create
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
 		//so that we don't flood the ready queue
 	}
-	return 0;
+}
+
+void * shortTermInitialize(void * arg) {
+	for (int i=0; i<3; i++) {
+		pthread_create(&CPUthreads[i], NULL, cpu[i].runProcess, (void *)r.pop());
+		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
+	}
 }
 
 void * shortTermScheduler (void * arg) {
-	simulationCPU cpus [3];
-	pthread_t threads [3];
-	
-	//initialize the threads
-	for (int i=0; i<3; i++) {
-		pthread_create(&threads[i], NULL, cpu[i].runProcess, (void *)r.pop());
-	}
-	
-	
+	int i = *(int *)arg;
+	pthread_join(&CPUthreads[i], NULL);
+	pthread_create(&CPUthreads[i], NULL, cpu[i].runProcess, (void *)r.pop());
 }

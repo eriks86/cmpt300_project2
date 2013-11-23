@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <stdlib.h>
+#include <pthread.h>
 #include "tests.h"
 
 using namespace std;
@@ -16,8 +17,8 @@ using namespace std;
 int main(){
 	srand(time(0)); //seed all the rand()s at once.
 	//If you call srand anywhere else, it will get seeded more than once resulting in the same numbers.
-	//testReadyQueue();
-	//cin.get();
-	testCPU();
+	pthread_t initializer;
+	pthread_create(&initializer, NULL, shortTermInitialize, NULL);
+	longTermScheduler();
 	return 0;
 }
