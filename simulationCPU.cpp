@@ -9,7 +9,7 @@
 
 #include "simulationCPU.h"
 #include "process.h"
-#include "longtermscheduler.h"
+#include "schedulers.h"
 #include "blockedqueue.h"
 #include "readyqueue.h"
 #include <iostream>
@@ -43,6 +43,7 @@ void * simulationCPU::runProcess(void * arg) {
 			return 0;
 		}
 	}
+	delete &p;
 	return 0;
 }
 

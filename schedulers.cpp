@@ -2,6 +2,8 @@
 #include "readyqueue.h"
 #include "blockedqueue.h"
 #include "tests.h"
+#include "simulationCPU.h"
+#include "schedulers.h"
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
@@ -31,7 +33,7 @@ void longTermScheduler() { //argument to pthread_create
 
 void * shortTermInitialize(void * arg) {
 	for (int i=0; i<3; i++) {
-		pthread_create(&CPUthreads[i], NULL, cpu[i].runProcess, (void *)r.pop());
+		pthread_create(&CPUthreads[i], NULL, cpus[i].runProcess, (void *)r.pop());
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
 	}
 }
@@ -39,5 +41,5 @@ void * shortTermInitialize(void * arg) {
 void * shortTermScheduler (void * arg) {
 	int i = *(int *)arg;
 	pthread_join(&CPUthreads[i], NULL);
-	pthread_create(&CPUthreads[i], NULL, cpu[i].runProcess, (void *)r.pop());
+	pthread_create(&CPUthreads[i], NULL, cpus[i].runProcess, (void *)r.pop());
 }

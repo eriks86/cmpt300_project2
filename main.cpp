@@ -10,7 +10,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <pthread.h>
-#include "tests.h"
+//#include "tests.h"
+#include "schedulers.h"
 
 using namespace std;
 

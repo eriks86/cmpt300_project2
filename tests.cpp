@@ -12,7 +12,7 @@
 #include "readyqueue.h"
 #include "blockedqueue.h"
 #include "tests.h"
-#include "longtermscheduler.h"
+#include "schedulers.h"
 #include "simulationCPU.h"
 #include <iostream>
 #include <stdlib.h>
