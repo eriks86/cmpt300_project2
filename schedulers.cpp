@@ -68,7 +68,8 @@ void * shortTermScheduler (void * arg) {
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
 	cout << "CPURunProcess: line 70\n";// REMOVE: debugging purposes
-	process p = *(process *)arg; 
+	process p = *(process *)arg; 	   // =============================== IAN: take a look here, my best guess for segfault
+	cout << "CPURunProcess: line 72\n";// REMOVE: debugging purposes
 	int counter = 0;
 	int next = p.next();
 	while (next!=process::END_OF_FILE) {

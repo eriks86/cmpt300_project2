@@ -8,6 +8,7 @@
 // ------------------------------------------
 
 #include "process.h"
+#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
@@ -40,6 +41,7 @@ process::~process()
 //if it is at the end of the file, returns process::END_OF_FILE
 int process::next()
 {
+	std::cout << "process::next: line 44\n";// REMOVE: debugging purposes 
     if (counter==length) {
         return END_OF_FILE;
     } else {
