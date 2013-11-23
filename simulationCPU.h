@@ -15,6 +15,7 @@ class simulationCPU
 private:
 	// private class implementation TO-DO
 public:
+	void * doSomething(void * arg);
 	simulationCPU();
 	virtual ~simulationCPU();
 };

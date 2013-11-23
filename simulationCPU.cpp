@@ -20,21 +20,27 @@ void *initializeCPUS(void*){
 	cout << "created a CPU" << endl;
 }
 
+void * doSomething(void * arg) {
+	cout << "created a thread" << endl;
+}
+
 // default constructor
 simulationCPU::simulationCPU()
 {
-	pthread_t simCPU;
+	/*pthread_t simCPU;
     int temp;
 	temp = pthread_create(&simCPU, NULL, initializeCPUS, NULL); 
 	if(temp){
 		cout << "Error:unable to create thread," << temp << endl;
 		exit(-1);
-	}
+	}*/
+
+	cout << "created a CPU" << endl;
 }
 
 // default deconstructor
 simulationCPU::~simulationCPU()
 {	
 	// CPU threads run until program is exited
-    pthread_exit(NULL);
+    //pthread_exit(NULL);
 }
