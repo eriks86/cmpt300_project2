@@ -15,10 +15,12 @@ pthread_t schedulerThreads [3];
 
 void longTermScheduler() {
 	while (true) {
-		if (r.size()>=16) {
+		if (r.size()>=MAX_MULTIPROGRAM) { 
 			//we don't want too many processes in the ready queue
+			//the LTS will not schedule more than MAX_MULTIPROGRAM processes in the queue
+			//but if stuff migrates there from the blocked queue then it may end up having more.
 			pthread_yield();
-			usleep(500);
+			usleep(500); //500 microsecond sleep
 			continue;
 		}
 		process * p = new process();
@@ -58,7 +60,8 @@ void * CPURunProcess (void * arg) {
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) { 
 			//this simulates a trap to IO. We want to block the process and resume it later
-			b.Block(&p);
+			//b.Block(&p); 
+///////////////TODO FINISH BLOCKED QUEUE LOGIC////////////////////
 			return 0;
 		}
 		counter++;
@@ -72,5 +75,6 @@ void * CPURunProcess (void * arg) {
 	//we reach this point in the code if the process has reached the end of its file
 	//delete &p;
 	//gives an error
+//////////TODO FIND OUT IF THIS CAUSES A MEMORY LEAK AND IF SO HOW TO FIX IT///////////
 	return 0;
 }
