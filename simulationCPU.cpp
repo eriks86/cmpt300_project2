@@ -27,7 +27,7 @@ void * simulationCPU::initializeCPUS(void* arg){
 	cout << "created a CPU" << endl;
 }
 
-void * simulationCPU::runProcess(void * arg) {
+static void * simulationCPU::runProcess(void * arg) {
 	process p = *(process *)arg; 
 	int counter = 0;
 	int next = p.next();

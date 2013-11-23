@@ -2,7 +2,7 @@
 #include "readyqueue.h"
 #include "blockedqueue.h"
 #include "tests.h"
-#include "simulationCPU.h"
+//#include "simulationCPU.h"
 #include "schedulers.h"
 #include <iostream>
 #include <unistd.h>
@@ -11,7 +11,6 @@
 
 readyqueue r;
 blockedqueue b;
-simulationCPU cpus [3];
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
 
@@ -33,13 +32,35 @@ void longTermScheduler() { //argument to pthread_create
 
 void * shortTermInitialize(void * arg) {
 	for (int i=0; i<3; i++) {
-		pthread_create(&CPUthreads[i], NULL, cpus[i].runProcess, (void *)r.pop());
+		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
 	}
 }
 
 void * shortTermScheduler (void * arg) {
 	int i = *(int *)arg;
-	pthread_join(&CPUthreads[i], NULL);
-	pthread_create(&CPUthreads[i], NULL, cpus[i].runProcess, (void *)r.pop());
+	while (true) {
+		pthread_join(CPUthreads[i], NULL);
+		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
+	}
+}
+
+void * CPURunProcess (void * arg) {
+	process p = *(process *)arg; 
+	int counter = 0;
+	int next = p.next();
+	while (next!=process::END_OF_FILE) {
+		if (next==process::IO) {
+			b.Block(&p);
+			return 0;
+		}
+		counter++;
+		if (counter==TIME_QUANTUM) {
+			p.numTimeouts++;
+			r.push(&p);
+			return 0;
+		}
+	}
+	//delete &p; //this is when the process has terminated
+	return 0;
 }

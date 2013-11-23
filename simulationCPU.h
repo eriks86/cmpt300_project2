@@ -15,11 +15,8 @@ class simulationCPU
 private:
 
 public:
-	static const long BLOCKED = 1;
-	static const long TIMED_OUT = 2;
-	static const long DONE = 0;
 	static const int TIME_QUANTUM = 16;
-	void * runProcess(void * arg);
+	static void * runProcess(void * arg);
 	void * initializeCPUS(void * arg);
 	simulationCPU();
 	virtual ~simulationCPU();

@@ -4,5 +4,7 @@
 void longTermScheduler ();
 void * shortTermScheduler (void * arg);
 void * shortTermInitialize (void * arg);
+void * CPURunProcess (void * arg);
+const int TIME_QUANTUM = 16;
 
 #endif
