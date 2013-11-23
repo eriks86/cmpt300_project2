@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// tests.cpp (file 11 of 11)
+// tests.cpp (file 3 of 11)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316
@@ -13,7 +13,6 @@
 #include "blockedqueue.h"
 #include "tests.h"
 #include "schedulers.h"
-#include "simulationCPU.h"
 #include <iostream>
 #include <stdlib.h>
 
@@ -52,6 +51,7 @@ void testReadyQueue(){
 }
 
 void testLTS() {
+	/* commented out until schedulers.cpp implemented
 	readyqueue r;
 	longTermScheduler((void *)&r);
 	while (!r.empty()) {
@@ -64,12 +64,15 @@ void testLTS() {
 		cout << endl;
 		delete p;
 	}
+	*/
 }
 
 void testCPU(){
+	/* commented out until schedulers.cpp implemented
 	simulationCPU myCPU;
 	process * p = new process();
 	void * something = myCPU.runProcess((void *)p);
 	cout << *(long *)something;
 	//delete p; //not sure why this was bad.
+	*/
 }

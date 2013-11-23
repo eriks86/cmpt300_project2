@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// readyqueue.cpp (file 3 of 9)
+// readyqueue.cpp (file 7 of 11)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316

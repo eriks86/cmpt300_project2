@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// process.h (file 2 of 9)
+// process.h (file 4 of 11)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316

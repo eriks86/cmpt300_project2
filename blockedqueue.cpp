@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// blockedqueue.cpp (file 7 of 9)
+// blockedqueue.cpp (file 9 of 11)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316

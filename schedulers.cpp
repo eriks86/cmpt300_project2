@@ -1,7 +1,15 @@
+// ------------------------------------------
+// CMPT 300 Project 2
+// schedulers.cpp (file 11 of 11)
+//
+// Erik Schultz, eriks@sfu.ca, 301034882
+// Ian Stewart, iastewar@sfu.ca, 301190316
+// Yixuan Li, yixuanl@sfu.ca, 301191905
+// ------------------------------------------
+
 #include "process.h"
 #include "readyqueue.h"
 #include "blockedqueue.h"
-//#include "tests.h"
 #include "schedulers.h"
 #include <iostream>
 #include <unistd.h>
