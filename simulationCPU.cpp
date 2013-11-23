@@ -25,20 +25,17 @@ void * simulationCPU::runProcess(void * arg) {
 	process p = *(process *)arg;
 	int counter = 0;
 	int next = p.next();
-	long b = BLOCKED;
-	long t = TIMED_OUT;
-	long d = DONE;
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) {
-			return (void*)b;
+			return (void*)&b;
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
 			p.numTimeouts++;
-			return (void *)t;
+			return (void *)&t;
 		}
 	}
-	return (void *)d;
+	return (void *)&d;
 }
 
 // default constructor
@@ -53,6 +50,9 @@ simulationCPU::simulationCPU()
 	}*/
 
 	cout << "created a CPU" << endl;
+	b = BLOCKED;
+	t = TIMED_OUT;
+	d = DONE;
 }
 
 // default deconstructor

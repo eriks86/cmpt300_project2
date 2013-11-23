@@ -71,6 +71,6 @@ void testCPU(){
 	simulationCPU myCPU;
 	process * p = new process();
 	void * something = myCPU.runProcess((void *)p);
-	cout << *(int *)something;
+	cout << *(long *)something;
 	delete p;
 }

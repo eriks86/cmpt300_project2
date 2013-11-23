@@ -13,7 +13,10 @@
 class simulationCPU 
 {
 private:
-	// private class implementation TO-DO
+	long b;
+	long t;
+	long d;
+	//wrapper variables for the constants
 public:
 	static const long BLOCKED = 1;
 	static const long TIMED_OUT = 2;
