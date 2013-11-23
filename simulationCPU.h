@@ -15,7 +15,11 @@ class simulationCPU
 private:
 	// private class implementation TO-DO
 public:
-	void * doSomething(void * arg);
+	static const int BLOCKED = 1;
+	static const int TIMED_OUT = 2;
+	static const int DONE = 0;
+	static const int TIME_QUANTUM = 16;
+	void * runCPU(void * arg);
 	simulationCPU();
 	virtual ~simulationCPU();
 };

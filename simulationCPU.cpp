@@ -20,8 +20,21 @@ void *initializeCPUS(void*){
 	cout << "created a CPU" << endl;
 }
 
-void * doSomething(void * arg) {
-	cout << "created a thread" << endl;
+void * runProcess(void * arg) {
+	process p = *(process *)arg;
+	int counter = 0;
+	int next = p.next();
+	while (next!=process::END_OF_FILE) {
+		if (next==process::IO) {
+			return (void*)&BLOCKED;
+		}
+		counter++;
+		if (counter==TIME_QUANTUM) {
+			p.numTimeouts++;
+			return (void *)&TIMED_OUT;
+		}
+	}
+	return (void *)&DONE;
 }
 
 // default constructor
