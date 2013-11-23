@@ -68,5 +68,9 @@ void testLTS() {
 
 void testCPU(){
 	// create 3 CPU threads to test
-	simulationCPU myCPU;	
+	simulationCPU myCPU;
+	process * p = new process();
+	void * something = myCPU.runProcess((void *)p);
+	cout << *(int *)something;
+	delete p;
 }

@@ -8,6 +8,7 @@
 // ------------------------------------------
 
 #include "simulationCPU.h"
+#include "process.h"
 #include <iostream>
 #include <cstdlib>
 #include <stdlib.h>
@@ -16,25 +17,28 @@
 
 using namespace std;
 
-void *initializeCPUS(void*){
+void * simulationCPU::initializeCPUS(void* arg){
 	cout << "created a CPU" << endl;
 }
 
-void * runProcess(void * arg) {
+void * simulationCPU::runProcess(void * arg) {
 	process p = *(process *)arg;
 	int counter = 0;
 	int next = p.next();
+	long b = BLOCKED;
+	long t = TIMED_OUT;
+	long d = DONE;
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) {
-			return (void*)&BLOCKED;
+			return (void*)b;
 		}
 		counter++;
 		if (counter==TIME_QUANTUM) {
 			p.numTimeouts++;
-			return (void *)&TIMED_OUT;
+			return (void *)t;
 		}
 	}
-	return (void *)&DONE;
+	return (void *)d;
 }
 
 // default constructor
