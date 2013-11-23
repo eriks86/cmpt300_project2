@@ -20,6 +20,7 @@ readyqueue r;
 blockedqueue b;
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
+int numProcesses = 0;
 
 void longTermScheduler() {
 	while (true) {
@@ -57,12 +58,17 @@ void * shortTermScheduler (void * arg) {
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
 		//when the thread is done, make it again
 		pthread_yield();
+		if(numProcesses > 6){
+			exit(-1);
+		}
 	}
 }
 
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
 	process * p = (process *)arg;
+	numProcesses++;
+	cout << "CPURunProcess has ran: " << numProcesses << " processes" << endl;
 	int counter = 0;
 	int next = p->next();
 	while (next!=process::END_OF_FILE) {
