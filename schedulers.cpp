@@ -20,6 +20,7 @@ readyqueue r;
 blockedqueue b;
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
+pthread_t io;
 int numProcesses = 0;
 
 void longTermScheduler() {
@@ -48,6 +49,8 @@ void * shortTermInitialize(void * arg) {
 		// create a STS for each CPU
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
 	}
+	// create a thread that simulates the completion of IO
+	pthread_create(&io, NULL, IODevice, NULL);
 }
 
 // we want to continually check whether each thread is done or not
@@ -74,8 +77,7 @@ void * CPURunProcess (void * arg) {
 	while (next!=process::END_OF_FILE) {
 		if (next==process::IO) { 
 			//this simulates a trap to IO. We want to block the process and resume it later
-			//b.Block(&p); 
-			///////////////TODO FINISH BLOCKED QUEUE LOGIC////////////////////
+			b.block(p); 
 			return 0;
 		}
 		counter++;
@@ -88,8 +90,21 @@ void * CPURunProcess (void * arg) {
 		next = p->next();
 	}
 	//we reach this point in the code if the process has reached the end of its file
-	//delete &p;
+	//delete p;
 	//gives an error
 	//////////TODO FIND OUT IF THIS CAUSES A MEMORY LEAK AND IF SO HOW TO FIX IT///////////
+	return 0;
+}
+
+//this simulates I/O events by randomly unblocking stuff from the blocked queue.
+void * IODevice (void * arg) {
+	while (true) {
+		while (b.size()==0) {
+			usleep(1000); //1 millisecond
+			pthread_yield();
+		}
+		r.push(b.IOFinish(rand()%b.size()));
+		usleep(rand()%1000); //up to 1 millisecond
+	}
 	return 0;
 }

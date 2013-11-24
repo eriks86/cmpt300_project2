@@ -20,9 +20,9 @@ using namespace std;
 class blockedqueue
 {
     public:
-        void Block(process* a);
-        void IOFinish(int position);
-        process * Unblock();
+        void block(process* a);
+        process * IOFinish(int position);
+		unsigned int size();
 		blockedqueue();
 		~blockedqueue();
     private:
