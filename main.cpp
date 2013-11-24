@@ -33,13 +33,13 @@ int main()
 	pthread_t initializer;
 	pthread_t io;
 	
-	pthread_create(&initializer, NULL, shortTermInitialize, NULL);          // 
-	pthread_create(&io, NULL, IODevice, NULL);								// 
+	pthread_create(&initializer, NULL, shortTermInitialize, NULL);           
+	pthread_create(&io, NULL, IODevice, NULL);								
 	
 	longTermScheduler();
 	
-	pthread_join(initializer, NULL);										// 
-	pthread_join(io, NULL);													// 
+	pthread_join(initializer, NULL);										
+	pthread_join(io, NULL);													
 	
 	cout << "END OF SIMULATION" << endl;
 	return 0;
