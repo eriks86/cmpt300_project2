@@ -15,7 +15,8 @@
 
 using namespace std;
 
-int main(){
+int main()
+{
 	srand(time(0)); // seed all the rand()s once and only once
 	pthread_t initializer;
 	pthread_t io;
@@ -24,6 +25,6 @@ int main(){
 	longTermScheduler();
 	pthread_join(initializer, NULL);
 	pthread_join(io, NULL);
-	
+	cout << "End of simulation" << endl;
 	return 0;
 }

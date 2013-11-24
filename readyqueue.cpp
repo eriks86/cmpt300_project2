@@ -13,7 +13,8 @@
 #include <queue>
 #include <pthread.h>
 
-readyqueue::readyqueue() {
+readyqueue::readyqueue() 
+{
 	pthread_mutexattr_init(&recursive);
 	pthread_mutexattr_settype(&recursive, PTHREAD_MUTEX_RECURSIVE);
 	pthread_mutex_init(&myMutex, &recursive);
@@ -22,13 +23,15 @@ readyqueue::readyqueue() {
 	emptyQ = PTHREAD_COND_INITIALIZER;
 }
 
-readyqueue::~readyqueue() {
+readyqueue::~readyqueue() 
+{
 	pthread_mutex_destroy(&myMutex);
 	pthread_cond_destroy(&emptyQ);
 	pthread_mutexattr_destroy(&recursive);
 }
 
-unsigned int readyqueue::size() {
+unsigned int readyqueue::size() 
+{
 	pthread_mutex_lock(&myMutex);
 	unsigned int temp = queues[0].size() + queues[1].size() + queues[2].size();
 	pthread_mutex_unlock(&myMutex);
@@ -36,7 +39,8 @@ unsigned int readyqueue::size() {
 }
 
 //Add something to the back of the queue
-void readyqueue::push(process * p) {
+void readyqueue::push(process * p) 
+{
 	//the level of a process in the multi-level feedback queue 
 	//corresponds to the number of times it has timed out.
 	pthread_mutex_lock(&myMutex);
@@ -48,19 +52,24 @@ void readyqueue::push(process * p) {
 
 //Deletes and returns the front of the queue.
 //If the queue is empty, it waits for it to be full again
-process * readyqueue::pop() {
+process * readyqueue::pop() 
+{
 	pthread_mutex_lock(&myMutex);
-	while (empty()) {
+	while (empty()) 
+	{
 		pthread_cond_wait(&emptyQ, &myMutex);
 	}
 	process * temp;
-	if (!queues[0].empty()) {
+	if (!queues[0].empty()) 
+	{
 		temp = queues[0].front();
 		queues[0].pop();
-	} else if (!queues[1].empty()) {
+	} else if (!queues[1].empty()) 
+	{
 		temp = queues[1].front();
 		queues[1].pop();
-	} else {
+	} else 
+	{
 		temp = queues[2].front();
 		queues[2].pop();
 	}
@@ -69,7 +78,8 @@ process * readyqueue::pop() {
 }
 
 //returns true if nothing is in the queue
-bool readyqueue::empty() {
+bool readyqueue::empty() 
+{
 	pthread_mutex_lock(&myMutex);
 	bool temp = size()==0;
 	pthread_mutex_unlock(&myMutex);

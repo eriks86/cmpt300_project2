@@ -54,10 +54,12 @@ void testLTS() {
 	/* commented out until schedulers.cpp implemented
 	readyqueue r;
 	longTermScheduler((void *)&r);
-	while (!r.empty()) {
+	while (!r.empty()) 
+	{
 		process * p = r.pop();
 		int instr = p->next();
-		while (instr!=process::END_OF_FILE) {
+		while (instr!=process::END_OF_FILE) 
+		{
 			cout << instr;
 			instr = p->next();
 		}
@@ -67,7 +69,8 @@ void testLTS() {
 	*/
 }
 
-void testCPU(){
+void testCPU()
+{
 	/* commented out until schedulers.cpp implemented
 	simulationCPU myCPU;
 	process * p = new process();
