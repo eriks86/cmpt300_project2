@@ -18,8 +18,12 @@ using namespace std;
 int main(){
 	srand(time(0)); // seed all the rand()s once and only once
 	pthread_t initializer;
+	pthread_t io;
 	pthread_create(&initializer, NULL, shortTermInitialize, NULL);
+	pthread_create(&io, NULL, IODevice, NULL);
 	longTermScheduler();
+	pthread_join(initializer, NULL);
+	pthread_join(io, NULL);
 	
 	return 0;
 }

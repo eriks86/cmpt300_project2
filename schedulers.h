@@ -17,5 +17,8 @@ void * CPURunProcess (void * arg);
 void * IODevice (void * arg);
 const int TIME_QUANTUM = 16;
 const int MAX_MULTIPROGRAM = 16;
+const int TERMINATE_NOW = 64; 
+// the idea is to terminate after some number of processes are run, so that we are not running forever
+// the simulation might run more than this number because all the threads don't terminate at once, but that doesn't matter
 
 #endif

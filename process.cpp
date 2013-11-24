@@ -31,7 +31,7 @@ process::process()
             instructions[i] = IO;
             if(probability < 21)
             {
-                probablility++; //probability is how much chance added onto the initial
+                probability++; //probability is how much chance added onto the initial
             }
         }
         else
@@ -40,7 +40,7 @@ process::process()
             probability = 0;
             if(rand()%100 < 1) //1% chance
             {
-                cpuCluster = rand()%5 + 1; //randomly determine how many cpu process will follow
+                cpuCluster = rand()%30 + 1; //randomly determine how many cpu process will follow
             }
             if(cpuCluster > 0)
             {
@@ -59,9 +59,12 @@ process::~process()
 //if it is at the end of the file, returns process::END_OF_FILE
 int process::next()
 {
-    if (counter==length) {
+    if (counter==length) 
+	{
         return END_OF_FILE;
-    } else {
+    } 
+	else 
+	{
         return instructions[counter++];
     }
 }

@@ -21,6 +21,7 @@ blockedqueue b;
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
 pthread_t io;
+pthread_mutex_t mutexNumProcesses = PTHREAD_MUTEX_INITIALIZER;
 int numProcesses = 0;
 
 void longTermScheduler() {
@@ -35,6 +36,10 @@ void longTermScheduler() {
 		}
 		process * p = new process();
 		r.push(p);
+		if (numProcesses > TERMINATE_NOW) 
+		{
+			return;
+		}
 		usleep(rand()/(RAND_MAX/500));
 		//sleep for between 0 and 500 microseconds. Not sure if this is enough.
 		//so that we don't flood the ready queue
@@ -49,8 +54,6 @@ void * shortTermInitialize(void * arg) {
 		// create a STS for each CPU
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);
 	}
-	// create a thread that simulates the completion of IO
-	pthread_create(&io, NULL, IODevice, NULL);
 }
 
 // we want to continually check whether each thread is done or not
@@ -61,8 +64,8 @@ void * shortTermScheduler (void * arg) {
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());
 		//when the thread is done, make it again
 		pthread_yield();
-		if(numProcesses > 6){
-			exit(-1);
+		if(numProcesses > TERMINATE_NOW){
+			return 0;
 		}
 	}
 }
@@ -70,8 +73,12 @@ void * shortTermScheduler (void * arg) {
 //this function simulates the running of a CPU. It goes through the process's instructions.
 void * CPURunProcess (void * arg) {
 	process * p = (process *)arg;
-	numProcesses++;
+	
+	pthread_mutex_lock(&mutexNumProcesses);
+	numProcesses++; // this is a critical section as discussed in class
 	cout << "CPURunProcess has ran: " << numProcesses << " processes" << endl;
+	pthread_mutex_unlock(&mutexNumProcesses);
+	
 	int counter = 0;
 	int next = p->next();
 	while (next!=process::END_OF_FILE) {
@@ -88,6 +95,7 @@ void * CPURunProcess (void * arg) {
 			return 0;
 		}
 		next = p->next();
+		pthread_yield(); //maybe someone else wants a chance
 	}
 	//we reach this point in the code if the process has reached the end of its file
 	//delete p;
@@ -104,6 +112,10 @@ void * IODevice (void * arg) {
 			pthread_yield();
 		}
 		r.push(b.IOFinish(rand()%b.size()));
+		if (numProcesses > TERMINATE_NOW) 
+		{
+			return 0;
+		}
 		usleep(rand()%1000); //up to 1 millisecond
 	}
 	return 0;
