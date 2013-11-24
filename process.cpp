@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// process.cpp (file 5 of 11)
+// process.cpp (file 3 of 9)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316
@@ -19,28 +19,25 @@ process::process()
 	probability = 0;
     length = rand()%246+10;
     cpuCluster = 0;
-    instructions = new int[length]; //array of random length between 10 and 255.
+    instructions = new int[length];         // array of random length between 10 and 255
 
-    //The instructions are IO instructions with a 10% probability.
-    //The IO instructions are uniformly distributed throughout the program
-	//(unrealistic, maybe change this later)
-    for (int i=0; i<length; i++)
+    for (int i=0; i<length; i++)			// each entry of instructions[] will be an IO or CPU
     {
         if (rand()%100 < (10 + probability) && cpuCluster == 0)
         {
-            instructions[i] = IO;
-            if(probability < 21)
+            instructions[i] = IO;	        // assign an IO operation
+            if(probability < 21)		
             {
-                probability++; //probability is how much chance added onto the initial
+                probability++;              // increasing probability to distribute an IO operation
             }
         }
         else
         {
-            instructions[i] = CPU;
+            instructions[i] = CPU;	        // assign a CPU operation
             probability = 0;
-            if(rand()%100 < 1) //1% chance
+            if(rand()%100 < 1) 			    // 1% chance for heavy CPU-bound processes
             {
-                cpuCluster = rand()%30 + 1; //randomly determine how many cpu process will follow
+                cpuCluster = rand()%30 + 1; // randomly determine how many CPU operations will follow
             }
             if(cpuCluster > 0)
             {
@@ -55,8 +52,9 @@ process::~process()
     delete [] instructions;
 }
 
-//increments the program counter and returns the next instruction
-//if it is at the end of the file, returns process::END_OF_FILE
+// public method: process::next()
+//      function: increments the program counter and returns the next instruction.
+//                if it is at the end of the file, returns END_OF_FILE
 int process::next()
 {
     if (counter==length) 

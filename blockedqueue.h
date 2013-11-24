@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// blockedqueue.h (file 8 of 11)
+// blockedqueue.h (file 6 of 9)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316
@@ -9,18 +9,23 @@
 
 #ifndef BLOCKEDQUEUE_H
 #define BLOCKEDQUEUE_H
+
+#include "process.h"
 #include <queue>
 #include <vector>
 #include <pthread.h>
-#include "process.h"
 
 using namespace std;
 
-//Implement the blocked queue with a vector and a queue
+/*/ class:   blockedqueue
+	purpose: this is a single-level queue of processes (see process.h)
+	         implemented with a vector and a queue.
+/*/
+
 class blockedqueue
 {
     public:
-        void block(process* a);
+        void block(process* a);					// method to block a process
         process * IOFinish(int position);
 		unsigned int size();
 		blockedqueue();
@@ -31,4 +36,4 @@ class blockedqueue
         vector<process*> notready;
 };
 
-#endif
+#endif // BLOCKEDQUEUE_H

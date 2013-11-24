@@ -1,6 +1,6 @@
 // ------------------------------------------
 // CMPT 300 Project 2
-// readyqueue.h (file 6 of 11)
+// readyqueue.h (file 4 of 9)
 //
 // Erik Schultz, eriks@sfu.ca, 301034882
 // Ian Stewart, iastewar@sfu.ca, 301190316
@@ -9,12 +9,17 @@
 
 #ifndef READYQUEUE_H
 #define READYQUEUE_H
+
 #include "process.h"
-#include <queue>
 #include <stdlib.h>
 #include <pthread.h>
+#include <queue>
 
-//This is a multi-level queue of processes implemented as a linked list.
+/*/ class:   readyqueue
+	purpose: this is a multi-level queue of processes (see process.h)
+	         implemented as a linked list.
+/*/
+
 class readyqueue 
 {
 private:
@@ -25,10 +30,10 @@ private:
 public:
 	readyqueue();
 	~readyqueue();
-	void push(process * p);
-	process * pop(void);
-	unsigned int size(void);
-	bool empty(void);
+	void push(process * p);				// method to add a process to the ready queue
+	process * pop(void);			    // method to get a process from the ready queue
+	unsigned int size(void);		    // method to get the current size of the ready queue
+	bool empty(void);                   // method to check if the queue is empty
 };
 
-#endif
+#endif // READYQUEUE_H
