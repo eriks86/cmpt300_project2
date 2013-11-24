@@ -28,6 +28,8 @@ class process
         int * instructions;
         int counter; //the simulated program counter
         int length; //size of the program
+        int probability;
+        int cpuCluster;
 };
 
 #endif // PROCESS_H
