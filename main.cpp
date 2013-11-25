@@ -11,6 +11,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/time.h>
 
 extern pthread_mutex_t mutexNumProcesses;
 extern pthread_mutex_t output;
@@ -36,6 +37,11 @@ int main()
 	pthread_t initializer;
 	pthread_t io;
 	
+	struct timeval start;													//use these to measure the time
+	struct timeval end;
+	suseconds_t elapsed;
+	gettimeofday(&start, NULL);
+	
 	pthread_create(&initializer, NULL, shortTermInitialize, NULL);           
 	pthread_create(&io, NULL, IODevice, NULL);								
 	
@@ -44,7 +50,12 @@ int main()
 	pthread_join(initializer, NULL);										
 	pthread_join(io, NULL);													
 	
+	gettimeofday(&end, NULL);
+	elapsed = end.tv_usec - start.tv_usec;
+	
 	cout << "END OF SIMULATION" << endl;
+	cout << "Time elapsed: " << elapsed << endl;
+	
 	pthread_mutex_destroy(&output);
 	pthread_mutex_destroy(&mutexNumProcesses);
 	return 0;
