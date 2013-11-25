@@ -23,13 +23,14 @@ pthread_t schedulerThreads [3];
 pthread_t io;
 pthread_mutex_t mutexNumProcesses = PTHREAD_MUTEX_INITIALIZER; // don't increment process::numProcesses twice to the same value
 pthread_mutex_t output = PTHREAD_MUTEX_INITIALIZER; // only output one thing at a time or it will be garbled
-int numProcesses = 0;
+int numCPUProcesses = 0; // number of processes that pass through the CPUs
+int numLTSProcesses = 0; // number of processes that pass through the long-term scheduler
 
 // function: longTermScheduler()
 //  purpose: creates processes and pushes them to the ready queue
 void longTermScheduler() 
 {
-	while (numProcesses <= TERMINATE_NOW)                                            // only simulate up to TERMINATE_NOW
+	while (numLTSProcesses <= TERMINATE_NOW)                                            // only simulate up to TERMINATE_NOW
 	{
 		if (r.size()>=MAX_MULTIPROGRAM)
 		{ 
@@ -42,6 +43,7 @@ void longTermScheduler()
 		}
 		process * p = new process();
 		r.push(p);
+		numLTSProcesses++;
 		usleep(rand()/(RAND_MAX/100)); 												 // avoid flooding ready queue
 	}
 }
@@ -66,13 +68,19 @@ void * shortTermInitialize(void * arg)
 void * shortTermScheduler (void * arg) 
 {
 	int i = *(int *)arg;
-	while (numProcesses <= TERMINATE_NOW) 
+	while (true) 
 	{
 		pthread_join(CPUthreads[i], NULL); 											 // try to join the thread
-		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());        // send a process to a CPU
-		pthread_mutex_lock(&output);
-		cout << "Scheduled a process on CPU " << i << endl;
-		pthread_mutex_unlock(&output);
+		if (numLTSProcesses <= TERMINATE_NOW || r.size()!=0 || b.size()!=0)
+		{
+			pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());        // send a process to a CPU
+			pthread_mutex_lock(&output);
+			cout << "Scheduled a process on CPU " << i << endl;
+			pthread_mutex_unlock(&output);
+		}
+		else {
+			break;
+		}
 		pthread_yield();
 	}
 	return 0;
@@ -84,9 +92,9 @@ void * CPURunProcess (void * arg)
 {
 	process * p = (process *)arg;
 	pthread_mutex_lock(&mutexNumProcesses);
-	numProcesses++; // this is a critical section as discussed in class
+	numCPUProcesses++; // this is a critical section as discussed in class
 	pthread_mutex_lock(&output);
-	cout << "CPURunProcess has ran: " << numProcesses << " processes" << endl;
+	cout << "CPURunProcess has ran: " << numCPUProcesses << " processes" << endl;
 	pthread_mutex_unlock(&output);
 	pthread_mutex_unlock(&mutexNumProcesses);
 	int counter = 1;
@@ -121,7 +129,7 @@ void * CPURunProcess (void * arg)
 //  purpose: simulates I/O operations unblocking processes from the blocked queue
 void * IODevice (void * arg) 
 {
-	while (numProcesses <= TERMINATE_NOW) 
+	while (numLTSProcesses <= TERMINATE_NOW || r.size()!=0 || b.size()!=0) 
 	{
 		while (b.size()==0) 
 		{
