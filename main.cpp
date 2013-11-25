@@ -12,6 +12,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+extern pthread_mutex_t mutexNumProcesses;
+extern pthread_mutex_t output;
+
 using namespace std;
 
 /*/ implementation overview
@@ -42,5 +45,7 @@ int main()
 	pthread_join(io, NULL);													
 	
 	cout << "END OF SIMULATION" << endl;
+	pthread_mutex_destroy(&output);
+	pthread_mutex_destroy(&mutexNumProcesses);
 	return 0;
 }

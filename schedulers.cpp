@@ -21,7 +21,8 @@ blockedqueue b;
 pthread_t CPUthreads [3];
 pthread_t schedulerThreads [3];
 pthread_t io;
-pthread_mutex_t mutexNumProcesses = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutexNumProcesses = PTHREAD_MUTEX_INITIALIZER; // don't increment process::numProcesses twice to the same value
+pthread_mutex_t output = PTHREAD_MUTEX_INITIALIZER; // only output one thing at a time or it will be garbled
 int numProcesses = 0;
 
 // function: longTermScheduler()
@@ -41,7 +42,7 @@ void longTermScheduler()
 		}
 		process * p = new process();
 		r.push(p);
-		usleep(rand()/(RAND_MAX/500));                                               // avoid flooding ready queue
+		usleep(rand()/(RAND_MAX/100)); 												 // avoid flooding ready queue
 	}
 }
 
@@ -69,6 +70,9 @@ void * shortTermScheduler (void * arg)
 	{
 		pthread_join(CPUthreads[i], NULL); 											 // try to join the thread
 		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());        // send a process to a CPU
+		pthread_mutex_lock(&output);
+		cout << "Scheduled a process on CPU " << i << endl;
+		pthread_mutex_unlock(&output);
 		pthread_yield();
 	}
 	return 0;
@@ -81,7 +85,9 @@ void * CPURunProcess (void * arg)
 	process * p = (process *)arg;
 	pthread_mutex_lock(&mutexNumProcesses);
 	numProcesses++; // this is a critical section as discussed in class
+	pthread_mutex_lock(&output);
 	cout << "CPURunProcess has ran: " << numProcesses << " processes" << endl;
+	pthread_mutex_unlock(&output);
 	pthread_mutex_unlock(&mutexNumProcesses);
 	int counter = 1;
 	int next = p->next();
