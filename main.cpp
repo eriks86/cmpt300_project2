@@ -39,7 +39,7 @@ int main()
 	
 	struct timeval start;													//use these to measure the time
 	struct timeval end;
-	suseconds_t elapsed;
+	long elapsed;
 	gettimeofday(&start, NULL);
 	
 	pthread_create(&initializer, NULL, shortTermInitialize, NULL);           
@@ -51,7 +51,7 @@ int main()
 	pthread_join(io, NULL);													
 	
 	gettimeofday(&end, NULL);
-	elapsed = end.tv_usec - start.tv_usec;
+	elapsed = 1000000*(long)(end.tv_sec) + (long)(end.tv_usec) - (1000000*(long)(start.tv_sec) + (long)(start.tv_usec));
 	
 	cout << "END OF SIMULATION" << endl;
 	cout << "Time elapsed: " << elapsed << endl;
