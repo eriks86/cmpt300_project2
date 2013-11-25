@@ -14,6 +14,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
+#include <math.h>
 
 readyqueue r;
 blockedqueue b;
@@ -50,7 +51,11 @@ void * shortTermInitialize(void * arg)
 {
 	for (int i=0; i<3; i++) 
 	{
-		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)r.pop());        // run 3 CPU threads
+		pthread_create(&CPUthreads[i], NULL, CPURunProcess, (void *)new process());        // run 3 CPU threads
+	}
+	for (int i=0; i<3; i++)
+	{   // We want all the CPURunProcesses to be created before the short term schedulers 
+		// so that they each at least have a chance to run
 		pthread_create(&schedulerThreads[i], NULL, shortTermScheduler, (void *)&i);  // run 3 STS threads for each CPU
 	}
 }
@@ -78,7 +83,7 @@ void * CPURunProcess (void * arg)
 	numProcesses++; // this is a critical section as discussed in class
 	cout << "CPURunProcess has ran: " << numProcesses << " processes" << endl;
 	pthread_mutex_unlock(&mutexNumProcesses);
-	int counter = 0;
+	int counter = 1;
 	int next = p->next();
 	
 	while (next!=process::END_OF_FILE) 
@@ -90,8 +95,10 @@ void * CPURunProcess (void * arg)
 			return 0;
 		}
 		counter++;
-		if (counter==TIME_QUANTUM) 
-		{
+		if (counter==(pow(2.0, (double)(p->numTimeouts))*TIME_QUANTUM)) 
+		{	// a process from level 1 gets TIME_QUANTUM instructions, 
+			// one from level 2 gets twice that, level three twice that, etc.
+			
 			// this simulates a timing out of the process. We want to add it back to the ready queue.
 			p->numTimeouts++;
 			r.push(p);
