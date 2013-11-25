@@ -26,8 +26,8 @@ class blockedqueue
 {
     public:
         void block(process* a);					// method to block a process
-        process * IOFinish(int position);
-		unsigned int size();
+        process * IOFinish(int position);		// unblock a process
+		unsigned int size();					// size of the queue
 		blockedqueue();
 		~blockedqueue();
     private:

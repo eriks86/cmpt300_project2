@@ -31,7 +31,7 @@ public:
 	readyqueue();
 	~readyqueue();
 	void push(process * p);				// method to add a process to the ready queue
-	process * pop(void);			    // method to get a process from the ready queue
+	process * pop(void);			    // method to get a process from the ready queue and delete it
 	unsigned int size(void);		    // method to get the current size of the ready queue
 	bool empty(void);                   // method to check if the queue is empty
 };
