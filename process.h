@@ -10,6 +10,10 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
 /*/ class:   process
 	purpose: simulates a process with an array of instructions, which are either
 			 CPU-bound computation or else traps to input/output devices.

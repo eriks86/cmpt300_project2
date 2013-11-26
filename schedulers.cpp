@@ -8,13 +8,6 @@
 // ------------------------------------------
 
 #include "schedulers.h"
-#include "process.h"
-#include "readyqueue.h"
-#include "blockedqueue.h"
-#include <iostream>
-#include <unistd.h>
-#include <stdlib.h>
-#include <math.h>
 
 readyqueue r;
 blockedqueue b;

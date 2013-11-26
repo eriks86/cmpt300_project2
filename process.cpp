@@ -8,9 +8,6 @@
 // ------------------------------------------
 
 #include "process.h"
-#include <iostream>
-#include <stdlib.h>
-#include <time.h>
 
 process::process()
 {

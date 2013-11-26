@@ -10,6 +10,14 @@
 #ifndef SCHEDULERS_H
 #define SCHEDULERS_H
 
+#include "process.h"
+#include "readyqueue.h"
+#include "blockedqueue.h"
+#include <iostream>
+#include <unistd.h>
+#include <stdlib.h>
+#include <math.h>
+
 /*/ files:    schedulers.h, schedulers.cpp
 	purpose:  encapsulate our scheduler implementation into a seperate file.
 	function: create processes in our MLFQ, simulate running a process on a CPU,
