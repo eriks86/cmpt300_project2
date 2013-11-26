@@ -37,14 +37,12 @@ void longTermScheduler()
 			// we don't want too many processes in the ready queue
 			// the LTS will not schedule more than MAX_MULTIPROGRAM processes in the queue
 			// but if stuff migrates there from the blocked queue then it may end up having more.
-			pthread_yield();
-			usleep(500); 															
+			pthread_yield(); 															
 			continue;
 		}
 		process * p = new process();
 		r.push(p);
 		numLTSProcesses++;
-		usleep(rand()/(RAND_MAX/100)); 												 // avoid flooding ready queue
 	}
 }
 
@@ -94,7 +92,7 @@ void * CPURunProcess (void * arg)
 	pthread_mutex_lock(&mutexNumProcesses);
 	numCPUProcesses++; // this is a critical section as discussed in class
 	pthread_mutex_lock(&output);
-	cout << "CPURunProcess has ran: " << numCPUProcesses << " processes" << endl;
+	cout << "CPURunProcess has ran: " << numCPUProcesses << " times" << endl;
 	pthread_mutex_unlock(&output);
 	pthread_mutex_unlock(&mutexNumProcesses);
 	int counter = 1;
@@ -106,6 +104,7 @@ void * CPURunProcess (void * arg)
 		{ 
 			// this simulates a trap to IO. We want to block the process and resume it later
 			b.block(p); 
+			usleep(CONTEXT_SWITCH); // simulates a context switch
 			return 0;
 		}
 		counter++;
@@ -114,8 +113,12 @@ void * CPURunProcess (void * arg)
 			// one from level 2 gets twice that, level three twice that, etc.
 			
 			// this simulates a timing out of the process. We want to add it back to the ready queue.
-			p->numTimeouts++;
+			if (p->numTimeouts < 3) 
+			{
+				p->numTimeouts++;
+			}
 			r.push(p);
+			usleep(CONTEXT_SWITCH);
 			return 0;
 		}
 		next = p->next();

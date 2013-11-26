@@ -22,10 +22,10 @@ void * shortTermInitialize (void * arg);    // initializes CPUs and STSs
 void * shortTermScheduler (void * arg);     // continually check if threads are done or not
 void * CPURunProcess (void * arg);			// simulates running a process from the ready queue
 void * IODevice (void * arg);			    // simulates unblocking processes in the blocked queue
-const int TIME_QUANTUM = 64;
+const int TIME_QUANTUM = 16;
 const int MAX_MULTIPROGRAM = 16;
-const int TERMINATE_NOW = 64;               // arbitrary number of processes to be run in our simulation so
-                                            // it doesn't run indefinitely. the actual number of processes may be
-											// greater than this number since all threads don't terminate at once.
+const int TERMINATE_NOW = 5;            	// arbitrary number of processes to be run in our simulation so
+                                            // it doesn't run indefinitely. 
+const int CONTEXT_SWITCH = 100;				// microseconds it takes for a context switch
 
 #endif // SCHEDULERS_H
