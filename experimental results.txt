@@ -10,8 +10,8 @@ TIME QUANTUM 4
 
 TIME QUANTUM 8
 
-	tests: 97 110 94 70 99 78 111 90 milliseconds
-	avg: 93.6 milliseconds
+	tests: 97 110 94 70 99 78 111 90 112 108 115 96 121 77 120 114 milliseconds
+	avg: 100.8
 
 TIME QUANTUM 16
 
