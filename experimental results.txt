@@ -1,0 +1,25 @@
+TIME QUANTUM 2
+
+	tests: 89 112 122 122 127 115 145 108 milliseconds
+	avg: 117.5 milliseconds
+
+TIME QUANTUM 4
+
+	tests: 133 101 124 103 116 119 144 85 milliseconds
+	avg: 115.6 milliseconds
+
+TIME QUANTUM 8
+
+	tests: 97 110 94 70 99 78 111 90 milliseconds
+	avg: 93.6 milliseconds
+
+TIME QUANTUM 16
+
+	tests: 109 95 100 123 108 105 102 107 milliseconds
+	avg: 106.1 milliseconds
+
+TIME QUANTUM 32
+
+	tests: 101 104 107 82 120 123 111 71 milliseconds
+	avg: 102.4 milliseconds
+
